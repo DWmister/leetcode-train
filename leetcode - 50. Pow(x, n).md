@@ -1,0 +1,84 @@
+2、实现 pow(x, n) ，即计算 x 的 n 次幂函数。https://leetcode-cn.com/problems/powx-n/
+
+**示例 1:**
+```
+输入: 2.00000, 10
+输出: 1024.00000
+```
+**示例 2:**
+```
+输入: 2.10000, 3
+输出: 9.26100
+```
+**示例 3:**
+
+```
+输入: 2.00000, -2
+输出: 0.25000
+解释: 2-2 = 1/22 = 1/4 = 0.25
+```
+**说明:**
+```
+-100.0 < x < 100.0
+n 是 32 位有符号整数，其数值范围是 [−231, 231 − 1] 。
+```
+
+**解题:**
+
+```js
+/**
+ * @param {number} x
+ * @param {number} n
+ * @return {number}
+ */
+var myPow = function(x, n) {
+    /**
+     * 方法一： recursion(递归解法)
+     * 如果知道了x^n/2的值记为a，则x^n的值为a*a,则不用再计算n/2遍
+     * 如果n为偶数，则结果为a*a
+     * 如果n为奇数，则结果为a*a*x
+     * 时间复杂度：O(logn),每递归一次n都会减半
+     * 空间复杂度：O(logn)
+     * 
+     * 取余耗时：
+     * 执行用时: 60 ms, 在所有 JavaScript 提交中击败了92.71%的用户
+     * 内存消耗: 33.8 MB, 在所有 JavaScript 提交中击败了86.20%的用户
+     * 
+     * 通过操作符耗时：
+     * 执行用时: 52 ms, 在所有 JavaScript 提交中击败了99.35%的用户
+     * 内存消耗: 33.7 MB, 在所有 JavaScript 提交中击败了91.93%的用户
+     */
+    // 任何数的0次幂都是1
+    if (!n) {
+        return 1
+    }
+    // 任何数的1次幂都是其本身
+    if (n === 1) {
+        return x
+    }
+    let abs_n = Math.abs(n)
+    // 通过2的取余判断n是否为偶数
+    let result = abs_n % 2 === 0 ? myPow(x * x, abs_n / 2) : myPow(x * x, (abs_n - 1) / 2) * x
+    
+    // 也可通过位运算符判断(最后一位是否为1)n是否为偶数，再通过移位运算符得n/2
+    // let result = abs_n & 1 ? myPow(x * x, (abs_n - 1) >>> 1) * x : myPow(x * x, abs_n >>> 1)
+    return n > 0 ? result : 1 / result
+
+
+    /**
+     * 方法二：iteration(循环)
+     * 执行用时: 64 ms, 在所有 JavaScript 提交中击败了81.18%的用户
+     * 内存消耗: 33.6 MB, 在所有 JavaScript 提交中击败了99.48%的用户
+     */
+
+    // let result = 1
+    // for (let i = Math.abs(n); i > 0; i = i >>> 1) {
+    //     if (i & 1) {
+    //         result *= x
+    //     }
+    //     x *= x
+    // }
+    // return n > 0 ? result : 1 / result
+
+};
+```

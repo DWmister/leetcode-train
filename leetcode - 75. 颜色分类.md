@@ -1,0 +1,71 @@
+9、[颜色分类](https://leetcode-cn.com/problems/sort-colors/)
+
+给定一个包含红色、白色和蓝色，一共 n 个元素的数组，**原地对它们进行排序**，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
+
+此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。
+
+**注意**:
+不能使用代码库中的排序函数来解决这道题。
+
+**示例 1:**
+
+```
+输入: [2,0,2,1,1,0]
+输出: [0,0,1,1,2,2]
+```
+
+**解题:**
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var sortColors = function(nums) {
+    // sort方法排序
+    // nums.sort((a, b) => a - b)
+
+    /**
+     * 方法一：插入排序
+     * 
+     * 时间复杂度: O(n^2)
+     * 空间复杂度: O(1)
+     * 执行用时: 60 ms, 在所有 JavaScript 提交中击败了90.24%的用户
+     * 内存消耗: 34.4 MB, 在所有 JavaScript 提交中击败了14.97%的用户
+     */
+    // var pre_index = 0
+    // var curr_val = 0
+    // for (var i = 1; i < nums.length; i ++) {
+    //     pre_index = i - 1
+    //     curr_val = nums[i]
+    //     while (pre_index >= 0 && nums[pre_index] > curr_val) {
+    //         nums[pre_index + 1] = nums[pre_index]
+    //         pre_index --
+    //     }
+    //     nums[pre_index + 1] = curr_val
+    // }
+
+    /**
+     * 方法二： 荷兰三色旗问题
+     * 这种方法太局限，只能解决当前问题
+     * 
+     * 时间复杂度: O(n)
+     * 空间复杂度: O(1)
+     * 执行用时: 56 ms, 在所有 JavaScript 提交中击败了96.83%的用户
+     * 内存消耗: 33.5 MB, 在所有 JavaScript 提交中击败了99.40%的用户
+     */
+    let [p0, curr_index, p2] = [0, 0, nums.length - 1]
+    while (curr_index <= p2) {
+        if (nums[curr_index] === 0) {
+            [nums[curr_index], nums[p0]] = [nums[p0], nums[curr_index]]
+            curr_index ++
+            p0 ++
+        } else if (nums[curr_index] === 2) {
+            [nums[curr_index], nums[p2]] = [nums[p2], nums[curr_index]]
+            p2 --
+        } else {
+            curr_index ++
+        }
+    }
+};
+```

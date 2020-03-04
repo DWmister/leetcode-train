@@ -1,4 +1,4 @@
-7、[腐烂的橘子](https://leetcode-cn.com/problems/rotting-oranges/)
+10、[腐烂的橘子](https://leetcode-cn.com/problems/rotting-oranges/)
 
 在给定的网格中，每个单元格可以有以下三个值之一：
 
@@ -35,6 +35,12 @@
 解释：因为 0 分钟时已经没有新鲜橘子了，所以答案就是 0 。
 ```
 
+**说明：**
+
+DFS（深度优先搜索）和 BFS（广度优先搜索）的对比图：
+
+![DFS 与 BFS](https://pic.leetcode-cn.com/725e473003c35e3be67ac6177cc6744fa04b0466795b5e69c7d673f626206b86-file_1583293748397)
+
 **解题:**
 
 ```js
@@ -44,7 +50,7 @@
  */
 var orangesRotting = function(grid) {
     /**
-     * 方法： 广度优先遍历(BFS)
+     * 方法： BFS
      * 
      * 执行用时: 76 ms, 在所有 JavaScript 提交中击败了87.95%的用户
      * 内存消耗: 36.8 MB, 在所有 JavaScript 提交中击败了29.63%的用户

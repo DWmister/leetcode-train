@@ -1,0 +1,98 @@
+11、[分糖果 II](https://leetcode-cn.com/problems/distribute-candies-to-people/)
+
+排排坐，分糖果。
+
+我们买了一些糖果`candies`，打算把它们分给排好队的`n = num_people`个小朋友。
+
+给第一个小朋友 1 颗糖果，第二个小朋友 2 颗，依此类推，直到给最后一个小朋友`n`颗糖果。
+
+然后，我们再回到队伍的起点，给第一个小朋友`n + 1`颗糖果，第二个小朋友`n + 2`颗，依此类推，直到给最后一个小朋友`2 * n`颗糖果。
+
+重复上述过程（每次都比上一次多给出一颗糖果，当到达队伍终点后再次从队伍起点开始），直到我们分完所有的糖果。注意，就算我们手中的剩下糖果数不够（不比前一次发出的糖果多），这些糖果也会全部发给当前的小朋友。
+
+返回一个长度为`num_people`、元素之和为`candies`的数组，以表示糖果的最终分发情况（即`ans[i]`表示第`i`个小朋友分到的糖果数）。
+
+**示例 1:**
+
+```
+输入：candies = 7, num_people = 4
+输出：[1,2,3,1]
+解释：
+第一次，ans[0] += 1，数组变为 [1,0,0,0]。
+第二次，ans[1] += 2，数组变为 [1,2,0,0]。
+第三次，ans[2] += 3，数组变为 [1,2,3,0]。
+第四次，ans[3] += 1（因为此时只剩下 1 颗糖果），最终数组变为 [1,2,3,1]。
+```
+
+**示例 2:**
+
+```
+输入：candies = 10, num_people = 3
+输出：[5,2,3]
+解释：
+第一次，ans[0] += 1，数组变为 [1,0,0]。
+第二次，ans[1] += 2，数组变为 [1,2,0]。
+第三次，ans[2] += 3，数组变为 [1,2,3]。
+第四次，ans[0] += 4，最终数组变为 [5,2,3]。
+```
+
+**解题:**
+
+```js
+/**
+ * @param {number} candies
+ * @param {number} num_people
+ * @return {number[]}
+ */
+var distributeCandies = function(candies, num_people) {
+
+    /**
+     * 方法一： 循环一个一个的分
+     * 
+     * 执行用时: 60 ms, 在所有 JavaScript 提交中击败了86.78%的用户
+     * 内存消耗: 34.4 MB, 在所有 JavaScript 提交中击败了59.02%的用户
+     */
+    let result = new Array(num_people).fill(0)
+    let curr = 1
+    let currIndex = 0
+    while (candies > 0) {
+        if (candies <= curr) {
+            result[currIndex] += candies
+        } else {
+            result[currIndex] += curr
+        }
+        candies -= curr
+        curr ++
+        currIndex = currIndex === num_people - 1 ? 0 : currIndex + 1
+    }
+    return result
+
+    /**
+     * 方法二： 等差数列
+     * 求和公式：Sn = n*a1 + n(n-1)*d/2 或者 Sn = n*(a1+an)/2
+     * 
+     * 除了最后一份数量由剩余糖果数量决定以外，其他数量都是从 1 开始构成的等差数列。
+     * 每个小朋友得到糖果的数量也是一个等差数列
+     * 
+     * 执行用时: 60 ms, 在所有 JavaScript 提交中击败了86.78%的用户
+     * 内存消耗: 33.9 MB, 在所有 JavaScript 提交中击败了73.77%的用户
+     */
+
+    // 小朋友的数量
+    // let n = num_people
+    // // 获得完整糖果的人数
+    // let p = Math.floor(Math.sqrt(2 * candies + 0.25) - 0.5)
+    // // 剩余糖果数量
+    // let r = Math.floor(candies - (p + 1) * p * 0.5)
+    // let result = new Array(n).fill(0)
+    // // 完整的分发回合数
+    // let rows = Math.floor(p / n)
+    // let cols = p % n
+    // for (let i = 0; i < n; i++) {
+    //     result[i] = (i + 1) * rows + Math.floor(rows * (rows - 1) / 2) * n
+    //     if(i<cols) result[i] += i + 1 + rows * n
+    // }
+    // result[cols] += r
+    // return result
+};
+```

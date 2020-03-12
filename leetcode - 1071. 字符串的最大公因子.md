@@ -1,0 +1,75 @@
+18、[字符串的最大公因子](https://leetcode-cn.com/problems/greatest-common-divisor-of-strings/)
+
+对于字符串`S`和`T`，只有在`S = T + ... + T`（`T`与自身连接`1`次或多次）时，我们才认定 “`T`能除尽`S`”。
+
+返回最长字符串`X`，要求满足`X`能除尽`str1`且`X`能除尽`str2`。
+
+**示例1 ：**
+
+```
+输入：str1 = "ABCABC", str2 = "ABC"
+输出："ABC"
+```
+
+**示例2 ：**
+
+```
+输入：str1 = "ABABAB", str2 = "ABAB"
+输出："AB"
+```
+
+**示例3：**
+
+```
+输入：str1 = "LEET", str2 = "CODE"
+输出：""
+```
+
+**解题:**
+
+```js
+var gcdOfStrings = function(str1, str2) {
+		/**
+		 * 方法一： 辗转相除法(欧几里德算法)求最大公约数(也可以用更相减损法等https://baike.baidu.com/item/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0/869308?fr=aladdin)
+		 * 以下是求 两个数字 的最大公约数的方法，递归求余
+		 * const gcd = (a, b) => {
+		 *     return b === 0 ? a : gcd(b, a % b)
+		 * }
+		 *
+		 * 对于求字符串的最大公因子：
+		 * 只要str1 + str2 === str2 + str1，则一定存在公因子X
+		 * 求最长的X，则先求X的长度，相当于在求str1和str2长度的最大公约数，即：var max_len = gcd(str1.length, str2.length)
+		 * 返回最大公因数(最长的X) str1.substr(0, max_len)
+		 *
+		 * 执行用时: 56 ms, 在所有 JavaScript 提交中击败了97.98%的用户
+		 * 内存消耗: 33.8 MB, 在所有 JavaScript 提交中击败了81.25%的用户
+		 */
+		
+		// if (str1 + str2 !== str2 + str1) {
+		// 	return ''
+		// }
+		// const gcd = (a, b) => {
+		// 	return b === 0 ? a : gcd(b, a % b)
+		// }
+		// var max_len = gcd(str1.length, str2.length)
+		// return str1.substr(0, max_len)
+
+		/**
+		 * 方法二： 递归，切割公共前缀
+		 * 如果较长字串以较短字串开头，则切掉较长字串的公共前缀部分，重复直到其中一个为空，另一个不为空的即为gcd字串
+		 * 如果较长字串不能以较短字串开头，则没有gcd字符串
+		 *
+		 * 执行用时: 48 ms, 在所有 JavaScript 提交中击败了100%的用户
+		 * 内存消耗: 33.7 MB, 在所有 JavaScript 提交中击败了93.75%的用户
+		 */
+		if (str1.length < str2.length) {
+			return gcdOfStrings(str2, str1)
+		} else if (!str1.startsWith(str2)) {
+			return ''
+		} else if (!str2.length) {
+			return str1
+		} else {
+			return gcdOfStrings(str1.substr(str2.length), str2)
+		}
+	};
+```
